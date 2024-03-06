@@ -15,5 +15,6 @@ jobs:
     - name: Build the Docker image
       run: |
         echo "${{ secrets.DOCKERPASSWORD }}" | docker login -u "intime333" --password-stdin
-        docker build . --file cool_gitDocker --tag intime333/cool_gitdocker:latest
+        docker build -t cool_docker .
+        docker tag cool_docker intime333/cool_docker:latest
         docker push intime333/cool_docker:lastest
