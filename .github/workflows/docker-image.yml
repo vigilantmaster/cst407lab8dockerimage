@@ -17,4 +17,4 @@ jobs:
         echo "${{ secrets.DOCKERPASSWORD }}" | docker login -u "intime333" --password-stdin
         docker build -t cool_docker .
         docker tag cool_docker intime333/cool_docker:latest
-        docker push docker.io/intime333/cool_docker:lastest
+        docker push intime333/cool_docker:latest
