@@ -1,0 +1,19 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: |
+        echo "${{ secrets.DOCKERPASSWORD }}" | docker login -u "intime333" --password-stdin
+        docker build . --file cool_gitDocker --tag intime333/cool_gitDocker:latest
+        docker push intime333/cool_Docker:lastest
