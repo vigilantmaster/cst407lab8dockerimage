@@ -20,8 +20,8 @@ jobs:
         docker push intime333/nice_docker:latest
     - name: Create kubeconfig
       run: |
-        mkdir ${HOME}/.kube
-        echo ${{secrets.KUBE_CONFIG}} | base64 --decode > ${HOME}/.kube/config
+        mkdir ${HOME}/runner/.kube
+        echo ${{secrets.KUBE_CONFIG}} | base64 --decode > ${HOME}/runner/.kube/config
         cat ${HOME}/.kube/config
     - name: Use context
       run: kubectl config use-context default
