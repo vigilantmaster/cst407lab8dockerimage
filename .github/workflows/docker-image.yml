@@ -26,6 +26,6 @@ jobs:
     - name: Use context
       run: |
         kubectl version
-        kubectl config use-context default
+        kubectl config view
     - name: Tell k8s to restart the cluster
       run:  kubectl rollout restart deployment cst407-deployment
