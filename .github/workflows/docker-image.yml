@@ -20,10 +20,13 @@ jobs:
         docker push intime333/nice_docker:latest
     - name: Create kubeconfig
       run: |
-        mkdir ${HOME}/runner/.kube
-        echo ${{secrets.KUBE_CONFIG}} | base64 --decode > ${HOME}/runner/.kube/config
+        mkdir ${HOME}/.kube
+        echo ${{secrets.KUBE_CONFIG}} | base64 --decode > ${HOME}/.kube/config
         cat ${HOME}/.kube/config
     - name: Use context
-      run: kubectl config use-context default
+      run:         |
+        kubectl version
+        kubectl config use-context default
+
     - name: Tell k8s to restart the cluster.
       run:  kubectl rollout restart deployment cst407-deployment
