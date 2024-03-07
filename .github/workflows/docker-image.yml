@@ -18,3 +18,12 @@ jobs:
         docker build -t cool_docker .
         docker tag cool_docker intime333/nice_docker:latest
         docker push intime333/nice_docker:latest
+    - name: Create kubeconfig
+      run: |
+        mkdir ${HOME}/.kube
+        echo ${{secrets.KUBE_CONFIG}} | base64 --decode > ${HOME}/.kube/config
+        cat ${HOME}/.kube/config
+    - name: Use context
+      run: kubectl config use-context default
+    - name: Tell k8s to restart the cluster.
+      run:  kubectl rollout restart deployment cst407-deployment
