@@ -5,26 +5,41 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
+
+    - name: Build and Push Docker image
       run: |
         echo "${{ secrets.DOCKERPASSWORD }}" | docker login -u "intime333" --password-stdin
         docker build -t cool_docker .
         docker tag cool_docker intime333/nice_docker:latest
         docker push intime333/nice_docker:latest
+
+    - name: Setup gcloud
+      uses: google-github-actions/setup-gcloud@v2
+      with:
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        export_default_credentials: true
+
+    - name: Get GKE credentials
+      run: |
+        gcloud --version
+        gcloud container clusters get-credentials cst407-cloudcomputing-tanel --region us-central1
+        #Replace your-cluster-name and your-cluster-region
+
     - name: Create kubeconfig
       run: |
-        mkdir ${HOME}/.kube
-        echo ${{secrets.KUBE_CONFIG}} | base64 --decode > ${HOME}/.kube/config
-    - name: Use context
+        mkdir -p ${HOME}/.kube
+        echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > ${HOME}/.kube/config
+
+    - name: Verify kubectl configuration
       run: |
         kubectl version
         kubectl config view
-    - name: Tell k8s to restart the cluster
-      run:  kubectl rollout restart deployment cst407-deployment
+
+    - name: Restart Kubernetes Deployment
+      run: kubectl rollout restart deployment cst407-deployment
