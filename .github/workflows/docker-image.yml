@@ -37,15 +37,10 @@ jobs:
         gcloud --version
         gcloud container clusters get-credentials cst407-cloudcomputing-tanel --region us-central1
 
-    #- name: Create kubeconfig
-     # run: |
-      #  mkdir -p ${HOME}/.kube
-       # echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > ${HOME}/.kube/config
-
     - name: Verify kubectl configuration
       run: |
         kubectl version
         kubectl config view
 
     - name: Restart Kubernetes Deployment
-      run: kubectl rollout restart deployment cst407-deployment
+      run: kubectl rollout restart deployment cst407-deployment -n cst407-deployment
