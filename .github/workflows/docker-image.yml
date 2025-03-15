@@ -14,8 +14,8 @@ jobs:
     - name: Build and Push Docker image
       run: |
         echo "${{ secrets.DOCKERPASSWORD }}" | docker login -u "intime333" --password-stdin
-        docker build -t cool_docker .
-        docker tag cool_docker intime333/nice_docker:latest
+        docker build -t nice_docker .
+        docker tag nice_docker intime333/nice_docker:latest
         docker push intime333/nice_docker:latest
 
     - name: Authenticate to Google Cloud
